@@ -13,9 +13,12 @@ import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.dependencyinjection.DependencyInjection
 import com.udacity.asteroidradar.database.AsteroidDataBase
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+import com.udacity.asteroidradar.utils.AsteroidFilter
 
 
 class MainFragment : Fragment() {
+
+    private lateinit var mainViewModel: MainViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +35,8 @@ class MainFragment : Fragment() {
         val viewModelFactory = MainViewModelFactory(dataInjection.repository, application)
 
         val viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+
+        mainViewModel = viewModel
 
         binding.viewModel = viewModel
 
@@ -66,7 +71,14 @@ class MainFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.show_all_menu -> mainViewModel.setFilter(AsteroidFilter.WEEKLY)
+            R.id.show_rent_menu -> mainViewModel.setFilter(AsteroidFilter.DAILY)
+            R.id.show_buy_menu -> mainViewModel.setFilter(AsteroidFilter.NO_FILTER)
+            else -> mainViewModel.setFilter(AsteroidFilter.NO_FILTER)
+        }
         return true
     }
 }
