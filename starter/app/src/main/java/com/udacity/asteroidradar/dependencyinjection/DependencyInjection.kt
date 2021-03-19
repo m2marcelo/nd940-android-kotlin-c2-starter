@@ -9,4 +9,4 @@ class DependencyInjection : Application() {
     val database by lazy { AsteroidDataBase.getInstance(this) }
 
     val repository by lazy { Repository(database) }
-} 
+}
